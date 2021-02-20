@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Notebook from './components/Notebook/Notebook';
 import {
   BrowserRouter as Router,
   Switch,
@@ -53,16 +54,41 @@ class App extends Component {
     super();
     this.state = {
       input: '',
-      route: 'login',
-      current: {
+      notebook: {
         id: '',
         notes: [],
       }
     }
   }
 
+  checkNotebookExists = (id) => {
+    const notebook = db_notebooks.filter(nb => {
+      return nb.id === id ? true : false;
+      }
+    );
+    return notebook.length === 1 ? true : false;
+  }
+
+  loadNotebook = (id) => {
+    try {
+      const notes = db_notes.filter(note => {
+        return note.id === id ? true : false;
+      })
+
+      this.setState(
+        {notebook: {
+          id: id,
+          notes: notes
+        }}
+      )
+    } catch (e) {
+
+    }
+
+  }
+
   render() {
-    const { input, route, current } = this.state;
+    // const { notebook } = this.state;
     return (
       <Router>
         <div>
@@ -80,7 +106,7 @@ class App extends Component {
               <h1>Home</h1>
             </Route>
             <Route path="/nb">
-              <h1>Notebook</h1>
+              <Notebook notebook={this.state.notebook} />
             </Route>
           </Switch>
         </div>
