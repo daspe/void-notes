@@ -5,9 +5,9 @@ import './Notebook.css';
 function Notebook(props) {
   return (
     <div className="notebook">
-      <Note />
-      <Note />
-      <Note />
+      {props.notebook.notes.map(data => (
+        <Note data={data} />
+      ))}
     </div>
   );
 }

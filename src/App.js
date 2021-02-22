@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
 } from 'react-router-dom';
 import './App.css';
 
@@ -53,7 +53,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      input: '',
+      inputID: '1358',
       notebook: {
         id: '',
         notes: [],
@@ -62,6 +62,7 @@ class App extends Component {
   }
 
   checkNotebookExists = (id) => {
+    // Return true if notebook exists
     const notebook = db_notebooks.filter(nb => {
       return nb.id === id ? true : false;
       }
@@ -70,21 +71,28 @@ class App extends Component {
   }
 
   loadNotebook = (id) => {
-    try {
-      const notes = db_notes.filter(note => {
-        return note.id === id ? true : false;
-      })
-
-      this.setState(
-        {notebook: {
-          id: id,
-          notes: notes
-        }}
-      )
-    } catch (e) {
-
+    if (this.checkNotebookExists(id)) {
+      try {
+        // Get all notes from notebook with matching id
+        const notes = db_notes.filter(note => {
+          return note.id === id ? true : false;
+        });
+        console.log(notes); // debug
+        // Load notebook into App state
+        this.setState(
+          {
+            notebook: {
+              id: id,
+              notes: notes
+            }
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      console.log('Error: Could not find notebook with that ID.')
     }
-
   }
 
   render() {
@@ -106,7 +114,7 @@ class App extends Component {
               <h1>Home</h1>
             </Route>
             <Route path="/nb">
-              <Notebook notebook={this.state.notebook} />
+              <Notebook notebook={this.state.notebook} loadNotebook={this.loadNotebook} />
             </Route>
           </Switch>
         </div>
