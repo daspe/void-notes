@@ -5,11 +5,16 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCheckSquare, faStickyNote } from '@fortawesome/free-regular-svg-icons';
 import NavigationBar from './components/NavigationBar/NavigationBar';
 import Notebook from './components/Notebook/Notebook';
 import NbKeyForm from './components/NbKeyForm/NbKeyForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+
+// Add icons to Font Awesome library
+library.add(faCheckSquare, faStickyNote);
 
 const API_URL = 'http://localhost:3001/'; // Void-Notes-API URL
 
@@ -54,32 +59,23 @@ class App extends Component {
   }
 
   onSubmitNbKey = () => {
-    console.log('this works');
+    console.log(this.state.inputNbKey);
   }
 
   render() {
     return (
       <Router>
         <div>
-          {/* <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/vn">Notebook</Link>
-            </li>
-          </ul> */}
-
+          <NavigationBar 
+            nbLoaded={this.state.nbLoaded}
+            onChange={this.onChangeNbKey}
+            onSubmit={this.onSubmitNbKey}
+          />
           <Switch>
             <Route path="/">
-              <NavigationBar />
-              {/* <NbKeyForm
-                onChange={this.onChangeNbKey}
-                onSubmit={this.onSubmitNbKey}
-              /> */}
+              
             </Route>
             <Route path="/vn">
-              <NavigationBar />
               {/* <Notebook nb={this.state.nb} notes={this.state.notes}/> */}
             </Route>
           </Switch>

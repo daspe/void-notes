@@ -7,11 +7,15 @@ import {
   FormControl,
   Button
 } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function NavigationBar() {
+function NavigationBar({ nbLoaded, onChange, onSubmit }) {
   return (
-    <Navbar bg="light" expand="sm">
-      <Navbar.Brand href="/">Void-Notes</Navbar.Brand>
+    <Navbar bg="dark" variant="dark" expand="md">
+      <Navbar.Brand href="/">
+        <FontAwesomeIcon icon={['far', 'sticky-note']} />
+        {' '}Void-Notes
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
@@ -19,8 +23,8 @@ function NavigationBar() {
           <Nav.Link href="/vn">Link</Nav.Link>
         </Nav>
         <Form inline>
-          <FormControl type="text" placeholder="Enter Notebook Key" className="mr-sm-2" />
-          <Button variant="outline-secondary">Submit</Button>
+          <FormControl type="text" placeholder="Enter Notebook Key" className="mr-sm-2" onChange={onChange}/>
+          <Button variant="outline-secondary" onClick={onSubmit}>Submit</Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>
