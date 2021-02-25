@@ -1,120 +1,86 @@
 import React, { Component } from 'react';
-import Notebook from './components/Notebook/Notebook';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
 } from 'react-router-dom';
+import NavigationBar from './components/NavigationBar/NavigationBar';
+import Notebook from './components/Notebook/Notebook';
+import NbKeyForm from './components/NbKeyForm/NbKeyForm';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-// temp databases
-const db_notebooks = [
-  {
-    id: '1358',
-    accessed: new Date(),
-    expiration: 30
-  },
-  {
-    id: '1205',
-    accessed: new Date(),
-    expiration: 30
-  }
-];
-
-const db_notes = [
-  {
-    id: 1,
-    notebook_id: '1358',
-    title: 'Test Note 1',
-    text: 'This is some text.',
-    created: new Date(),
-    meta: {}
-  },
-  {
-    id: 2,
-    notebook_id: '1358',
-    title: 'Test Note 2',
-    text: 'This is some more text.',
-    created: new Date(),
-    meta: {}
-  },
-  {
-    id: 3,
-    notebook_id: '1205',
-    title: 'Test Note 3',
-    text: 'This is even more text.',
-    created: new Date(),
-    meta: {}
-  }
-];
+const API_URL = 'http://localhost:3001/'; // Void-Notes-API URL
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      inputID: '1358',
-      notebook: {
-        id: '',
-        notes: [],
-      }
+      inputNbKey: '',
+      nbLoaded: false,
+      notesLoaded: false,
+      nb: {
+        nb_key: '',
+        created: '',
+        expiration: '',
+      },
+      notes: [],
     }
   }
 
-  checkNotebookExists = (id) => {
-    // Return true if notebook exists
-    const notebook = db_notebooks.filter(nb => {
-      return nb.id === id ? true : false;
-      }
-    );
-    return notebook.length === 1 ? true : false;
+  loadNotebook = (data) => {
+    this.setState({
+      nbLoaded: true,
+      nb: {
+        nb_key: data.nb_key,
+        created: data.created,
+        expiration: data.expiration,
+      },
+    });
   }
 
-  loadNotebook = (id) => {
-    if (this.checkNotebookExists(id)) {
-      try {
-        // Get all notes from notebook with matching id
-        const notes = db_notes.filter(note => {
-          return note.id === id ? true : false;
-        });
-        console.log(notes); // debug
-        // Load notebook into App state
-        this.setState(
-          {
-            notebook: {
-              id: id,
-              notes: notes
-            }
-          }
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    } else {
-      console.log('Error: Could not find notebook with that ID.')
-    }
+  loadNotes = (data) => {
+    this.setState({
+      notesLoaded: true,
+      notes: data,
+    });
+  }
+
+  onChangeNbKey = (event) => {
+    this.setState({
+      inputNbKey: event.target.value,
+    });
+  }
+
+  onSubmitNbKey = () => {
+    console.log('this works');
   }
 
   render() {
-    // const { notebook } = this.state;
     return (
       <Router>
         <div>
-          <ul>
+          {/* <ul>
             <li>
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/nb">Notebook</Link>
+              <Link to="/vn">Notebook</Link>
             </li>
-          </ul>
+          </ul> */}
 
           <Switch>
             <Route path="/">
-              <h1>Home</h1>
+              <NavigationBar />
+              {/* <NbKeyForm
+                onChange={this.onChangeNbKey}
+                onSubmit={this.onSubmitNbKey}
+              /> */}
             </Route>
-            <Route path="/nb">
-              <Notebook notebook={this.state.notebook} loadNotebook={this.loadNotebook} />
+            <Route path="/vn">
+              <NavigationBar />
+              {/* <Notebook nb={this.state.nb} notes={this.state.notes}/> */}
             </Route>
           </Switch>
         </div>
