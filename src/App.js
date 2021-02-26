@@ -5,11 +5,16 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
+
+// Import Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheckSquare, faStickyNote } from '@fortawesome/free-regular-svg-icons';
+
+// Import React Components
 import NavigationBar from './components/NavigationBar/NavigationBar';
 import Notebook from './components/Notebook/Notebook';
-import NbKeyForm from './components/NbKeyForm/NbKeyForm';
+
+// Import Bootstrap and App CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -22,11 +27,12 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      msg: '',
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
       nb: {
-        nb_key: '',
+        nbKey: '',
         created: '',
         expiration: '',
       },
@@ -38,7 +44,7 @@ class App extends Component {
     this.setState({
       nbLoaded: true,
       nb: {
-        nb_key: data.nb_key,
+        nbKey: data.nbKey,
         created: data.created,
         expiration: data.expiration,
       },
@@ -46,6 +52,7 @@ class App extends Component {
   }
 
   loadNotes = (data) => {
+    console.log(data);
     this.setState({
       notesLoaded: true,
       notes: data,
@@ -59,7 +66,30 @@ class App extends Component {
   }
 
   onSubmitNbKey = () => {
-    console.log(this.state.inputNbKey);
+    const SubmittedNbKey = this.state.inputNbKey;
+    // this.setState({nb: {nbKey: this.state.inputNbKey}});
+    // Fetch notebook data from API using submitted key
+    fetch((API_URL + 'vn/nb/' + SubmittedNbKey), {
+      method: 'get',
+    })
+    .then(response => response.json())
+    .then(nb => {
+      if (nb.nbKey) {
+        this.loadNotebook(nb); // load the notebook
+        fetch((API_URL + 'vn/notes/' + nb.nbKey), {
+          method: 'get',
+        })
+        .then(response => response.json())
+        .then(notes => {
+          if (notes[0].nbKey) {
+            this.loadNotes(notes); // load notes in notebook
+          }
+        })
+        .catch(err => console.log(err));
+      }
+      // console.log(this.state.nb, this.state.nbLoaded); // debug
+    })
+    .catch(err => console.log(err));
   }
 
   render() {
@@ -73,10 +103,15 @@ class App extends Component {
           />
           <Switch>
             <Route path="/">
-              
+              <Notebook
+                nbLoaded={this.state.nbLoaded}
+                notesLoaded={this.state.notesLoaded}
+                nb={this.state.nb}
+                notes={this.state.notes}
+              />
             </Route>
-            <Route path="/vn">
-              {/* <Notebook nb={this.state.nb} notes={this.state.notes}/> */}
+            <Route path="/about">
+              
             </Route>
           </Switch>
         </div>

@@ -1,6 +1,13 @@
 .note {
+    padding: 5px;
+
     height: 200px;
     width: 200px;
     border: 1px solid black;
     margin: 20px;
+}
+
+.note-title {
+    font-weight: bold;
+    border-bottom: 1px solid gray;
 }
