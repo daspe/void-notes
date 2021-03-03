@@ -13,6 +13,7 @@ import { faCheckSquare, faStickyNote } from '@fortawesome/free-regular-svg-icons
 // Import React Components
 import NavigationBar from './components/NavigationBar/NavigationBar';
 import Notebook from './components/Notebook/Notebook';
+import Message from './components/Message/Message';
 
 // Import Bootstrap and App CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -92,6 +93,13 @@ class App extends Component {
     .catch(err => console.log(err));
   }
 
+  displayMessage = (msg) => {
+    this.setState = {
+      msg: msg,
+      msgShow: true,
+    }
+  }
+
   render() {
     return (
       <Router>
@@ -101,6 +109,7 @@ class App extends Component {
             onChange={this.onChangeNbKey}
             onSubmit={this.onSubmitNbKey}
           />
+          <Message text={this.state.msg} />
           <Switch>
             <Route path="/">
               <Notebook

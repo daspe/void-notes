@@ -1,0 +1,8 @@
+.message {
+    background-color: azure;
+}
+
+.message-text {
+    width: 100%;
+    text-align: center;
+}

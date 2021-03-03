@@ -2,10 +2,10 @@ import React from 'react';
 import './Note.css';
 
 function Note(props) {
-  const { title, note } = props.data;
+  const { id, title, note } = props.data;
   return (
     <div className="note">
-      <div className="note-title">{title}</div>
+      <div className="note-title">({id}) {title}</div>
       <div>{note}</div>
     </div>
   );

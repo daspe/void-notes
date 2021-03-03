@@ -17,16 +17,18 @@ function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
       );
     } else {
       return (
-        <div className="notebook">
-          <h2>Notebook {nb.nbKey} was loaded</h2>
-          <p>There are no notes in this notebook...</p>
+        <div>
+          <h4>Notebook {nb.nbKey} was loaded</h4>
+          <div className="notebook">
+            <p>There are no notes in this notebook...</p>
+          </div>
         </div>
       );
     }
   } else {
     return (
-      <div className="notebook">
-        <h2>Notebook not loaded</h2>
+      <div>
+        <h4>Notebook not loaded</h4>
       </div>
     );
   }

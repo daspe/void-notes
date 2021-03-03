@@ -23,7 +23,14 @@ function NavigationBar({ nbLoaded, onChange, onSubmit }) {
           <Nav.Link href="/about">About</Nav.Link>
         </Nav>
         <Form inline>
-          <FormControl type="text" placeholder="Enter Notebook Key" className="mr-sm-2" onChange={onChange}/>
+          <FormControl 
+            type="text"
+            placeholder="Enter Notebook Key"
+            size="sm"
+            className="mr-sm-2"
+            onChange={onChange}
+            onSubmit={onSubmit}
+          />
           <Button variant="outline-secondary" onClick={onSubmit}>Submit</Button>
         </Form>
       </Navbar.Collapse>
