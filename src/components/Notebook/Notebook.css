@@ -1,4 +1,8 @@
 .notebook {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-rows: 1fr;
+    gap: 20px;
     margin: 20px;
     padding: 10px;
     border: 1px solid gray;

@@ -1,10 +1,9 @@
 .note {
     padding: 5px;
-
-    height: 200px;
-    width: 200px;
+    min-height: 150px;
+    min-width: 200px;
+    background-color: lemonchiffon;
     border: 1px solid black;
-    margin: 20px;
 }
 
 .note-title {
