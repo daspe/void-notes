@@ -2,7 +2,7 @@ import React from 'react';
 import Note from '../Note/Note';
 import './Notebook.css';
 
-function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
+function Notebook({ setMsg, nbLoaded, notesLoaded, nb, notes }) {
   if (nbLoaded) {
     if (notesLoaded) {
       return (
@@ -26,11 +26,7 @@ function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
       );
     }
   } else {
-    return (
-      <div>
-        <h4>Notebook not loaded</h4>
-      </div>
-    );
+    return null;
   }
 }
 

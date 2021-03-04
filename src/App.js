@@ -29,6 +29,7 @@ class App extends Component {
     super();
     this.state = {
       msg: '',
+      showMsg: true,
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
@@ -39,6 +40,8 @@ class App extends Component {
       },
       notes: [],
     }
+    this.toggleMsg = this.toggleMsg.bind(this);
+    this.setMsg = this.setMsg.bind(this);
   }
 
   loadNotebook = (data) => {
@@ -93,11 +96,16 @@ class App extends Component {
     .catch(err => console.log(err));
   }
 
-  displayMessage = (msg) => {
-    this.setState = {
+  toggleMsg = () => {
+    // Toggle message display on or off
+    this.setState({showMsg: !this.state.showMsg});
+  }
+
+  setMsg = (msg) => {
+    this.setState({
       msg: msg,
-      msgShow: true,
-    }
+      showMsg: true,
+    });
   }
 
   render() {
@@ -109,10 +117,13 @@ class App extends Component {
             onChange={this.onChangeNbKey}
             onSubmit={this.onSubmitNbKey}
           />
-          <Message text={this.state.msg} />
+          {this.state.showMsg &&
+            <Message msg={this.state.msg} toggleMsg={this.toggleMsg} />
+          }
           <Switch>
             <Route path="/">
               <Notebook
+                setMsg={this.setMsg}
                 nbLoaded={this.state.nbLoaded}
                 notesLoaded={this.state.notesLoaded}
                 nb={this.state.nb}

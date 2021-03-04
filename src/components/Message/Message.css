@@ -1,8 +1,22 @@
 .message {
-    background-color: azure;
+    background-color: silver;
+    padding: 5px 20px;
+    text-align: center;
 }
 
 .message-text {
     width: 100%;
     text-align: center;
+}
+
+.message-btn {
+    float: right;
+    padding: 0px 5px;
+    border: none;
+    border-radius: 2px;
+    transition: 0.2s;
+}
+
+.message-btn:hover {
+    background-color: #f44336;
 }
