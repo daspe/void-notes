@@ -29,7 +29,7 @@ class App extends Component {
     super();
     this.state = {
       msg: '',
-      showMsg: true,
+      showMsg: false,
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
@@ -46,6 +46,8 @@ class App extends Component {
 
   loadNotebook = (data) => {
     this.setState({
+      msg: 'Notebook was loaded!',
+      showMsg: true,
       nbLoaded: true,
       nb: {
         nbKey: data.nbKey,

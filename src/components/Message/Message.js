@@ -1,12 +1,11 @@
 // Message component; displays a message under navigation bar
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import './Message.css';
 
 function Message({ msg, toggleMsg }) {
   return (
     <div className="message">
-      <span className="message-text">Test Message {msg} </span>
+      <span className="message-text">{msg}</span>
       <button
         variant="secondary"
         className="message-btn"
