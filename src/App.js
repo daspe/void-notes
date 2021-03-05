@@ -115,6 +115,7 @@ class App extends Component {
         <div>
           <NavigationBar 
             nbLoaded={this.state.nbLoaded}
+            nb={this.state.nb}
             onChange={this.onChangeNbKey}
             onSubmit={this.onSubmitNbKey}
           />

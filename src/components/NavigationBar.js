@@ -3,13 +3,19 @@ import React from 'react';
 import { 
   Nav,
   Navbar,
-  Form,
-  FormControl,
-  Button
 } from 'react-bootstrap';
+import LoadNbForm from './LoadNbForm';
+import NavBarNbInfo from './NavBarNbInfo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function NavigationBar({ nbLoaded, onChange, onSubmit }) {
+function NavigationBar({ nbLoaded, nb, onChange, onSubmit }) {
+  let loadNb;
+  if (!nbLoaded) {
+    loadNb = <LoadNbForm onChange={onChange} onSubmit={onSubmit} />;
+  } else {
+    loadNb = <NavBarNbInfo nb={nb} />;
+  }
+
   return (
     <Navbar bg="dark" variant="dark" expand="md">
       <Navbar.Brand href="/">
@@ -22,17 +28,7 @@ function NavigationBar({ nbLoaded, onChange, onSubmit }) {
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/about">About</Nav.Link>
         </Nav>
-        <Form inline>
-          <FormControl 
-            type="text"
-            placeholder="Enter Notebook Key"
-            size="sm"
-            className="mr-sm-2"
-            onChange={onChange}
-            onSubmit={onSubmit}
-          />
-          <Button variant="outline-secondary" onClick={onSubmit}>Submit</Button>
-        </Form>
+        {loadNb}
       </Navbar.Collapse>
     </Navbar>
   );
