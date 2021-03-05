@@ -1,5 +1,5 @@
 import React from 'react';
-import './Note.css';
+import './components.css';
 
 function Note(props) {
   const { id, title, note } = props.data;

@@ -1,12 +1,14 @@
 import React from 'react';
-import Note from '../Note/Note';
-import './Notebook.css';
+import Note from './Note';
+import NotebookInfo from './NotebookInfo';
+import './components.css';
 
 function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
   if (nbLoaded) {
     if (notesLoaded) {
       return (
         <div>
+
           <div className="notebook">
             {notes.map(data => (
               <Note key={data.id} data={data} />

@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from 'react-router-dom';
 
 // Import Font Awesome
@@ -11,9 +10,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheckSquare, faStickyNote } from '@fortawesome/free-regular-svg-icons';
 
 // Import React Components
-import NavigationBar from './components/NavigationBar/NavigationBar';
-import Notebook from './components/Notebook/Notebook';
-import Message from './components/Message/Message';
+import NavigationBar from './components/NavigationBar';
+import Notebook from './components/Notebook';
+import Message from './components/Message';
 
 // Import Bootstrap and App CSS
 import 'bootstrap/dist/css/bootstrap.min.css';

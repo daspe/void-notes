@@ -1,6 +1,6 @@
 // Message component; displays a message under navigation bar
 import React from 'react';
-import './Message.css';
+import './components.css';
 
 function Message({ msg, toggleMsg }) {
   return (
