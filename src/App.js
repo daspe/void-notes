@@ -27,8 +27,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      msg: '',
-      showMsg: false,
+      msg: 'Welcome to Void-Notes!',
+      showMsg: true,
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
@@ -38,15 +38,15 @@ class App extends Component {
         expiration: '',
       },
       notes: [],
-    }
+    };
+    this.baseState = this.state; // Initial state of App
+    this.unloadNotes = this.unloadNotes.bind(this);
     this.toggleMsg = this.toggleMsg.bind(this);
     this.setMsg = this.setMsg.bind(this);
   }
 
   loadNotebook = (data) => {
     this.setState({
-      msg: 'Notebook was loaded!',
-      showMsg: true,
       nbLoaded: true,
       nb: {
         nbKey: data.nbKey,
@@ -54,6 +54,7 @@ class App extends Component {
         expiration: data.expiration,
       },
     });
+    this.setMsg('Notebook was loaded!');
   }
 
   loadNotes = (data) => {
@@ -62,6 +63,11 @@ class App extends Component {
       notesLoaded: true,
       notes: data,
     });
+  }
+
+  unloadNotes = () => {
+    this.setState(this.baseState);
+    this.setMsg('Notebook was unloaded...');
   }
 
   onChangeNbKey = (event) => {
@@ -116,6 +122,7 @@ class App extends Component {
           <NavigationBar 
             nbLoaded={this.state.nbLoaded}
             nb={this.state.nb}
+            unloadNotes={this.unloadNotes}
             onChange={this.onChangeNbKey}
             onSubmit={this.onSubmitNbKey}
           />

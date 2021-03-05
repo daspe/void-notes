@@ -26,7 +26,11 @@ function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
       );
     }
   } else {
-    return null;
+    return (
+      <div className="notebook">
+        <p>A notebook is not loaded :(</p>
+      </div>
+    );
   }
 }
 

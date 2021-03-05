@@ -8,12 +8,12 @@ import LoadNbForm from './LoadNbForm';
 import NavBarNbInfo from './NavBarNbInfo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function NavigationBar({ nbLoaded, nb, onChange, onSubmit }) {
+function NavigationBar({ nbLoaded, nb, unloadNotes, onChange, onSubmit }) {
   let loadNb;
   if (!nbLoaded) {
     loadNb = <LoadNbForm onChange={onChange} onSubmit={onSubmit} />;
   } else {
-    loadNb = <NavBarNbInfo nb={nb} />;
+    loadNb = <NavBarNbInfo nb={nb} unloadNotes={unloadNotes} />;
   }
 
   return (

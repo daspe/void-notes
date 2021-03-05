@@ -16,7 +16,7 @@ function LoadNbForm({ onChange, onSubmit }) {
         onChange={onChange}
         onSubmit={onSubmit}
       />
-      <Button variant="outline-secondary" onClick={onSubmit}>Submit</Button>
+      <Button variant="outline-secondary" size="sm" onClick={onSubmit}>Load</Button>
     </Form>
   );
 }
