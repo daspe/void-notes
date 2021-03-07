@@ -5,18 +5,29 @@ import {
   Button
 } from 'react-bootstrap';
 
-function LoadNbForm({ onChange, onSubmit }) {
+function LoadNbForm({ onChange, onSubmit, onCreateNb }) {
   return (
     <Form inline>
+      <Button
+        variant="outline-success"
+        size="sm"
+        className="mr-2 mb-2"
+        onClick={onCreateNb}
+      >+ New Notebook</Button>
       <FormControl
         type="text"
         placeholder="Enter Notebook Key"
         size="sm"
-        className="mr-sm-2"
+        className="mr-2 mb-2"
         onChange={onChange}
         onSubmit={onSubmit}
       />
-      <Button variant="outline-secondary" size="sm" onClick={onSubmit}>Load</Button>
+      <Button
+        variant="outline-secondary"
+        size="sm"
+        className="mr-2 mb-2"
+        onClick={onSubmit}
+      >Load</Button>
     </Form>
   );
 }
