@@ -8,8 +8,8 @@ function NavBarNbInfo({ nb, unloadNotes }) {
     <div className="navbar-nb-info">
       <div>
         <div>Key: {nb.nbKey}</div>
-        <div><small>Created: {nb.created}</small></div>
-        <div><small>Expires: {nb.expiration}</small></div>
+        <div><small>Created: {nb.created.slice(0, 10)}</small></div>
+        <div><small>Expires: {nb.expiration.slice(0, 10)}</small></div>
       </div>
       <div className="unload-btn">
         <Button variant="outline-danger" size="sm" onClick={unloadNotes}>Unload</Button>

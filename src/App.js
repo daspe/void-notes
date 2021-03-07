@@ -12,6 +12,7 @@ import { faCheckSquare, faStickyNote } from '@fortawesome/free-regular-svg-icons
 // Import React Components
 import NavigationBar from './components/NavigationBar';
 import Notebook from './components/Notebook';
+import NotebookInfo from './components/NotebookInfo';
 import Message from './components/Message';
 
 // Import Bootstrap and App CSS
@@ -22,6 +23,8 @@ import './App.css';
 library.add(faCheckSquare, faStickyNote);
 
 const API_URL = 'http://localhost:3001/'; // Void-Notes-API URL
+
+const NB_KEY_LENGTH = 30; // Used to verify key length before api request
 
 class App extends Component {
   constructor() {
@@ -77,10 +80,13 @@ class App extends Component {
   }
 
   onSubmitNbKey = () => {
-    const SubmittedNbKey = this.state.inputNbKey;
-    // this.setState({nb: {nbKey: this.state.inputNbKey}});
+    const submittedNbKey = this.state.inputNbKey;
+    if (submittedNbKey.length < NB_KEY_LENGTH || submittedNbKey > NB_KEY_LENGTH) {
+      this.setMsg('Incorrect key length. Must be 30 characters long.');
+      return; // Stop if key is the wrong length
+    }
     // Fetch notebook data from API using submitted key
-    fetch((API_URL + 'vn/nb/' + SubmittedNbKey), {
+    fetch((API_URL + 'vn/nb/' + submittedNbKey), {
       method: 'get',
     })
     .then(response => response.json())
@@ -131,6 +137,9 @@ class App extends Component {
           }
           <Switch>
             <Route path="/">
+              {this.state.nbLoaded &&
+                <NotebookInfo className="container" nb={this.state.nb} notes={this.state.notes} />
+              }
               <Notebook
                 setMsg={this.setMsg}
                 nbLoaded={this.state.nbLoaded}

@@ -1,6 +1,5 @@
 import React from 'react';
 import Note from './Note';
-import NotebookInfo from './NotebookInfo';
 import './components.css';
 
 function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
@@ -8,8 +7,7 @@ function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
     if (notesLoaded) {
       return (
         <div>
-
-          <div className="notebook">
+          <div className="notebook container">
             {notes.map(data => (
               <Note key={data.id} data={data} />
             ))}
@@ -19,7 +17,7 @@ function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
     } else {
       return (
         <div>
-          <div className="notebook">
+          <div className="notebook container">
             <p>There are no notes in this notebook...</p>
           </div>
         </div>
@@ -27,7 +25,7 @@ function Notebook({ nbLoaded, notesLoaded, nb, notes }) {
     }
   } else {
     return (
-      <div className="notebook">
+      <div className="notebook container">
         <p>A notebook is not loaded :(</p>
       </div>
     );
