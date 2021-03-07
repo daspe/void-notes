@@ -57,7 +57,6 @@ class App extends Component {
         expiration: data.expiration,
       },
     });
-    this.setMsg('Notebook was loaded!');
   }
 
   loadNotes = (data) => {
@@ -83,7 +82,7 @@ class App extends Component {
     const submittedNbKey = this.state.inputNbKey;
     if (submittedNbKey.length < NB_KEY_LENGTH || submittedNbKey > NB_KEY_LENGTH) {
       this.setMsg('Incorrect key length. Must be 30 characters long.');
-      return; // Stop if key is the wrong length
+      // return; // Stop if key is the wrong length; comment out for debug
     }
     // Fetch notebook data from API using submitted key
     fetch((API_URL + 'vn/nb/' + submittedNbKey), {
@@ -93,6 +92,7 @@ class App extends Component {
     .then(nb => {
       if (nb.nbKey) {
         this.loadNotebook(nb); // load the notebook
+        this.setMsg('Notebook was loaded!');
         fetch((API_URL + 'vn/notes/' + nb.nbKey), {
           method: 'get',
         })
@@ -104,7 +104,22 @@ class App extends Component {
         })
         .catch(err => console.log(err));
       }
-      // console.log(this.state.nb, this.state.nbLoaded); // debug
+    })
+    .catch(err => console.log(err));
+  }
+
+  onCreateNb = () => {
+    // Create a new notebook in the database
+    fetch((API_URL + 'vn/nb/create'), {
+      method: 'post',
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.nb);
+      if (data.nb.nbKey) {
+        this.loadNotebook(data.nb); // load the notebook
+        this.setMsg('New notebook was created!');
+      }
     })
     .catch(err => console.log(err));
   }
@@ -131,6 +146,7 @@ class App extends Component {
             unloadNotes={this.unloadNotes}
             onChange={this.onChangeNbKey}
             onSubmit={this.onSubmitNbKey}
+            onCreateNb={this.onCreateNb}
           />
           {this.state.showMsg &&
             <Message msg={this.state.msg} toggleMsg={this.toggleMsg} />

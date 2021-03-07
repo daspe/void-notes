@@ -8,14 +8,7 @@ import LoadNbForm from './LoadNbForm';
 import NavBarNbInfo from './NavBarNbInfo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function NavigationBar({ nbLoaded, nb, unloadNotes, onChange, onSubmit }) {
-  let loadNb;
-  if (!nbLoaded) {
-    loadNb = <LoadNbForm onChange={onChange} onSubmit={onSubmit} />;
-  } else {
-    loadNb = <NavBarNbInfo nb={nb} unloadNotes={unloadNotes} />;
-  }
-
+function NavigationBar({ nbLoaded, nb, unloadNotes, onChange, onSubmit, onCreateNb }) {
   return (
     <Navbar bg="dark" variant="dark" expand="md">
       <Navbar.Brand href="/">
@@ -25,10 +18,12 @@ function NavigationBar({ nbLoaded, nb, unloadNotes, onChange, onSubmit }) {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/about">About</Nav.Link>
         </Nav>
-        {loadNb}
+        {!nbLoaded ? 
+          <LoadNbForm onChange={onChange} onSubmit={onSubmit} onCreateNb={onCreateNb} /> :
+          <NavBarNbInfo nb={nb} unloadNotes={unloadNotes} />
+        }
       </Navbar.Collapse>
     </Navbar>
   );
