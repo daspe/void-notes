@@ -7,10 +7,21 @@ import {
 
 // Import Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCheckSquare, faStickyNote } from '@fortawesome/free-regular-svg-icons';
+import { 
+  faCheckSquare,
+  faStickyNote,
+  faClock,
+  faTimesCircle,
+  faTrashAlt,
+} from '@fortawesome/free-regular-svg-icons';
+import {
+  faTools,
+  faKey,
+} from '@fortawesome/free-solid-svg-icons';
 
 // Import React Components
 import NavigationBar from './components/NavigationBar';
+import NbControlPanel from './components/NbControlPanel';
 import Notebook from './components/Notebook';
 import NotebookInfo from './components/NotebookInfo';
 import Message from './components/Message';
@@ -20,7 +31,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 // Add icons to Font Awesome library
-library.add(faCheckSquare, faStickyNote);
+library.add(
+  faCheckSquare,
+  faStickyNote,
+  faClock,
+  faTimesCircle,
+  faTrashAlt,
+  faTools,
+  faKey,
+);
 
 const API_URL = 'http://localhost:3001/'; // Void-Notes-API URL
 
@@ -43,7 +62,7 @@ class App extends Component {
       notes: [],
     };
     this.baseState = this.state; // Initial state of App
-    this.unloadNotes = this.unloadNotes.bind(this);
+    this.unloadNotebook = this.unloadNotebook.bind(this);
     this.toggleMsg = this.toggleMsg.bind(this);
     this.setMsg = this.setMsg.bind(this);
   }
@@ -67,7 +86,7 @@ class App extends Component {
     });
   }
 
-  unloadNotes = () => {
+  unloadNotebook = () => {
     this.setState(this.baseState);
     this.setMsg('Notebook was unloaded...');
   }
@@ -118,7 +137,28 @@ class App extends Component {
       console.log(data.nb);
       if (data.nb.nbKey) {
         this.loadNotebook(data.nb); // load the notebook
-        this.setMsg('New notebook was created!');
+        this.setMsg('Notebook was created!');
+      }
+    })
+    .catch(err => console.log(err));
+  }
+
+  onDeleteNb = () => {
+    // Delete the currently loaded notebook
+    if (!this.state.nb.nbKey) {
+      return; // End function if nbKey not found
+    }
+    const key = this.state.nb.nbKey;
+
+    fetch((API_URL + 'vn/nb/' + key + '/delete'), {
+      method: 'delete',
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.nb.nbKey) {
+        this.unloadNotebook(data.nb); // unload the notebook
+        this.setMsg('Notebook was deleted...');
       }
     })
     .catch(err => console.log(err));
@@ -143,7 +183,7 @@ class App extends Component {
           <NavigationBar 
             nbLoaded={this.state.nbLoaded}
             nb={this.state.nb}
-            unloadNotes={this.unloadNotes}
+            unloadNotebook={this.unloadNotebook}
             onChange={this.onChangeNbKey}
             onSubmit={this.onSubmitNbKey}
             onCreateNb={this.onCreateNb}
@@ -154,7 +194,17 @@ class App extends Component {
           <Switch>
             <Route path="/">
               {this.state.nbLoaded &&
-                <NotebookInfo className="container" nb={this.state.nb} notes={this.state.notes} />
+              <div>
+                <NotebookInfo 
+                  className="container"
+                  nb={this.state.nb}
+                  notes={this.state.notes}
+                />
+                <NbControlPanel 
+                  nb={this.state.nb}
+                  onDeleteNb={this.onDeleteNb}
+                />
+              </div>
               }
               <Notebook
                 setMsg={this.setMsg}
