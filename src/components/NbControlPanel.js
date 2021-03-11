@@ -9,12 +9,18 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function NbControlPanel({ nb, onRenewNb, unloadNotebook, onDeleteNb }) {
+function NbControlPanel({ 
+  nb,
+  openNoteModal,
+  onRenewNb,
+  unloadNotebook,
+  onDeleteNb 
+}) {
   return (
     <div className="container">
       <ButtonToolbar aria-label="Toolbar with button groups">
         <ButtonGroup className="mr-2" aria-label="First group">
-          <Button variant="success">
+          <Button variant="success" onClick={openNoteModal}>
             <FontAwesomeIcon className="mr-2" icon={['far', 'sticky-note']} />
             Create Note
           </Button>
@@ -22,7 +28,7 @@ function NbControlPanel({ nb, onRenewNb, unloadNotebook, onDeleteNb }) {
         <ButtonGroup className="mr-2" aria-label="Second group">
           <DropdownButton 
             as={ButtonGroup}
-            drop="bottom"
+            drop="down"
             variant="secondary"
             title="Notebook Actions"
             id="bg-nested-dropdown"

@@ -24,6 +24,7 @@ import NavigationBar from './components/NavigationBar';
 import NbControlPanel from './components/NbControlPanel';
 import Notebook from './components/Notebook';
 import NotebookInfo from './components/NotebookInfo';
+import NoteModalForm from './components/NoteModalForm';
 import Message from './components/Message';
 
 // Import Bootstrap and App CSS
@@ -51,6 +52,7 @@ class App extends Component {
     this.state = {
       msg: 'Welcome to Void-Notes!',
       showMsg: true,
+      showNoteModal: false,
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
@@ -66,6 +68,9 @@ class App extends Component {
     this.toggleMsg = this.toggleMsg.bind(this);
     this.setMsg = this.setMsg.bind(this);
   }
+
+  openNoteModal = () => this.setState({ showNoteModal: true });
+  closeNoteModal = () => this.setState({ showNoteModal: false });
 
   loadNotebook = (data) => {
     this.setState({
@@ -186,6 +191,21 @@ class App extends Component {
     .catch(err => console.log(err));
   }
 
+  onCreateNote = (data) => {
+    // TODO -- Create a note with supplied data
+    return;
+  }
+
+  onEditNote = (data) => {
+    // TODO -- Edit a note with supplied data
+    return;
+  }
+
+  onDeleteNote = (data) => {
+    // TODO -- Delete a note
+    return;
+  }
+
   toggleMsg = () => {
     // Toggle message display on or off
     this.setState({showMsg: !this.state.showMsg});
@@ -224,10 +244,20 @@ class App extends Component {
                 />
                 <NbControlPanel 
                   nb={this.state.nb}
+                  openNoteModal={this.openNoteModal}
                   onRenewNb={this.onRenewNb}
                   unloadNotebook={this.unloadNotebook}
                   onDeleteNb={this.onDeleteNb}
                 />
+                {this.state.showNoteModal &&
+                  <NoteModalForm 
+                    showNoteModal={this.state.showNoteModal}
+                    closeNoteModal={this.closeNoteModal}
+                    onCreateNote={this.onCreateNote}
+                    onEditNote={this.onEditNote}
+                    onDeleteNote={this.onDeleteNote}
+                  />
+                }
               </div>
               }
               <Notebook
