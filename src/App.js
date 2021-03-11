@@ -92,6 +92,7 @@ class App extends Component {
   }
 
   unloadNotebook = () => {
+    // Unload notes and reset to fresh app state 
     this.setState(this.baseState);
     this.setMsg('Notebook was unloaded...');
   }
@@ -117,6 +118,8 @@ class App extends Component {
       if (nb.nbKey) {
         this.loadNotebook(nb); // load the notebook
         this.setMsg('Notebook was loaded!');
+        // TODO --> Extract fetch requests into their own functions
+        // E.G. handleNbRequest, handleNotesRequest
         fetch((API_URL + 'vn/notes/' + nb.nbKey), {
           method: 'get',
         })
@@ -141,7 +144,7 @@ class App extends Component {
     .then(data => {
       console.log(data.nb);
       if (data.nb.nbKey) {
-        this.loadNotebook(data.nb); // load the notebook
+        this.loadNotebook(data.nb);
         this.setMsg('Notebook was created!');
       }
     })
@@ -150,9 +153,7 @@ class App extends Component {
 
   onRenewNb = () => {
     // Renew the currently loaded notebook
-    if (!this.state.nb.nbKey) {
-      return; // End function if nbKey not found
-    }
+    if (!this.state.nb.nbKey) {return}; // End function if nbKey not found
     const key = this.state.nb.nbKey;
 
     fetch((API_URL + 'vn/nb/' + key + '/renew'), {
@@ -172,9 +173,7 @@ class App extends Component {
 
   onDeleteNb = () => {
     // Delete the currently loaded notebook
-    if (!this.state.nb.nbKey) {
-      return; // End function if nbKey not found
-    }
+    if (!this.state.nb.nbKey) {return}; // End function if nbKey not found
     const key = this.state.nb.nbKey;
 
     fetch((API_URL + 'vn/nb/' + key + '/delete'), {
@@ -184,7 +183,7 @@ class App extends Component {
     .then(data => {
       console.log(data);
       if (data.nb.nbKey) {
-        this.unloadNotebook(data.nb); // unload the notebook
+        this.unloadNotebook(data.nb);
         this.setMsg('Notebook was deleted...');
       }
     })
@@ -192,8 +191,32 @@ class App extends Component {
   }
 
   onCreateNote = (data) => {
-    // TODO -- Create a note with supplied data
-    return;
+    // Create a new note in the database
+    if (!this.state.nb.nbKey) {return}; // End function if nbKey not found
+    const key = this.state.nb.nbKey;
+
+    fetch((API_URL + 'vn/note/' + key + '/create'), {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        title: data.title,
+        note: data.note,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.note);
+      if (data.note) {
+        let updatedNotes = this.state.notes.slice(); // create copy of this.state.notes
+        updatedNotes.push(data.note); // add note to updatedNotes
+        this.setState({
+          showNoteModal: false, // hide the note modal
+          notes: updatedNotes,
+        });
+        this.setMsg('Note was created!');
+      }
+    })
+    .catch(err => console.log(err));
   }
 
   onEditNote = (data) => {
