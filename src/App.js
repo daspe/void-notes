@@ -24,6 +24,7 @@ import NavigationBar from './components/NavigationBar';
 import NbControlPanel from './components/NbControlPanel';
 import Notebook from './components/Notebook';
 import NotebookInfo from './components/NotebookInfo';
+import NoteModalForm from './components/NoteModalForm';
 import Message from './components/Message';
 
 // Import Bootstrap and App CSS
@@ -51,6 +52,7 @@ class App extends Component {
     this.state = {
       msg: 'Welcome to Void-Notes!',
       showMsg: true,
+      showNoteModal: false,
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
@@ -66,6 +68,9 @@ class App extends Component {
     this.toggleMsg = this.toggleMsg.bind(this);
     this.setMsg = this.setMsg.bind(this);
   }
+
+  openNoteModal = () => this.setState({ showNoteModal: true });
+  closeNoteModal = () => this.setState({ showNoteModal: false });
 
   loadNotebook = (data) => {
     this.setState({
@@ -87,6 +92,7 @@ class App extends Component {
   }
 
   unloadNotebook = () => {
+    // Unload notes and reset to fresh app state 
     this.setState(this.baseState);
     this.setMsg('Notebook was unloaded...');
   }
@@ -112,6 +118,8 @@ class App extends Component {
       if (nb.nbKey) {
         this.loadNotebook(nb); // load the notebook
         this.setMsg('Notebook was loaded!');
+        // TODO --> Extract fetch requests into their own functions
+        // E.G. handleNbRequest, handleNotesRequest
         fetch((API_URL + 'vn/notes/' + nb.nbKey), {
           method: 'get',
         })
@@ -136,7 +144,7 @@ class App extends Component {
     .then(data => {
       console.log(data.nb);
       if (data.nb.nbKey) {
-        this.loadNotebook(data.nb); // load the notebook
+        this.loadNotebook(data.nb);
         this.setMsg('Notebook was created!');
       }
     })
@@ -145,9 +153,7 @@ class App extends Component {
 
   onRenewNb = () => {
     // Renew the currently loaded notebook
-    if (!this.state.nb.nbKey) {
-      return; // End function if nbKey not found
-    }
+    if (!this.state.nb.nbKey) {return}; // End function if nbKey not found
     const key = this.state.nb.nbKey;
 
     fetch((API_URL + 'vn/nb/' + key + '/renew'), {
@@ -167,9 +173,7 @@ class App extends Component {
 
   onDeleteNb = () => {
     // Delete the currently loaded notebook
-    if (!this.state.nb.nbKey) {
-      return; // End function if nbKey not found
-    }
+    if (!this.state.nb.nbKey) {return}; // End function if nbKey not found
     const key = this.state.nb.nbKey;
 
     fetch((API_URL + 'vn/nb/' + key + '/delete'), {
@@ -179,11 +183,50 @@ class App extends Component {
     .then(data => {
       console.log(data);
       if (data.nb.nbKey) {
-        this.unloadNotebook(data.nb); // unload the notebook
+        this.unloadNotebook(data.nb);
         this.setMsg('Notebook was deleted...');
       }
     })
     .catch(err => console.log(err));
+  }
+
+  onCreateNote = (data) => {
+    // Create a new note in the database
+    if (!this.state.nb.nbKey) {return}; // End function if nbKey not found
+    const key = this.state.nb.nbKey;
+
+    fetch((API_URL + 'vn/note/' + key + '/create'), {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        title: data.title,
+        note: data.note,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.note);
+      if (data.note) {
+        let updatedNotes = this.state.notes.slice(); // create copy of this.state.notes
+        updatedNotes.push(data.note); // add note to updatedNotes
+        this.setState({
+          showNoteModal: false, // hide the note modal
+          notes: updatedNotes,
+        });
+        this.setMsg('Note was created!');
+      }
+    })
+    .catch(err => console.log(err));
+  }
+
+  onEditNote = (data) => {
+    // TODO -- Edit a note with supplied data
+    return;
+  }
+
+  onDeleteNote = (data) => {
+    // TODO -- Delete a note
+    return;
   }
 
   toggleMsg = () => {
@@ -224,10 +267,20 @@ class App extends Component {
                 />
                 <NbControlPanel 
                   nb={this.state.nb}
+                  openNoteModal={this.openNoteModal}
                   onRenewNb={this.onRenewNb}
                   unloadNotebook={this.unloadNotebook}
                   onDeleteNb={this.onDeleteNb}
                 />
+                {this.state.showNoteModal &&
+                  <NoteModalForm 
+                    showNoteModal={this.state.showNoteModal}
+                    closeNoteModal={this.closeNoteModal}
+                    onCreateNote={this.onCreateNote}
+                    onEditNote={this.onEditNote}
+                    onDeleteNote={this.onDeleteNote}
+                  />
+                }
               </div>
               }
               <Notebook
