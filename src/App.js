@@ -143,6 +143,28 @@ class App extends Component {
     .catch(err => console.log(err));
   }
 
+  onRenewNb = () => {
+    // Renew the currently loaded notebook
+    if (!this.state.nb.nbKey) {
+      return; // End function if nbKey not found
+    }
+    const key = this.state.nb.nbKey;
+
+    fetch((API_URL + 'vn/nb/' + key + '/renew'), {
+      method: 'put',
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.nb.nbKey) {
+        const expiration = data.nb.expiration;
+        this.loadNotebook(data.nb); // reload the notebook
+        this.setMsg(`Notebook was renewed until ${expiration.slice(0, 10)} (30 days)`);
+      }
+    })
+    .catch(err => console.log(err));
+  }
+
   onDeleteNb = () => {
     // Delete the currently loaded notebook
     if (!this.state.nb.nbKey) {
@@ -202,6 +224,8 @@ class App extends Component {
                 />
                 <NbControlPanel 
                   nb={this.state.nb}
+                  onRenewNb={this.onRenewNb}
+                  unloadNotebook={this.unloadNotebook}
                   onDeleteNb={this.onDeleteNb}
                 />
               </div>
