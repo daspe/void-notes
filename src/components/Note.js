@@ -1,12 +1,14 @@
 import React from 'react';
+import NoteControlPanel from './NoteControlPanel';
 import './components.css';
 
-function Note(props) {
-  const { id, title, note } = props.data;
+function Note({ data, onDeleteNote }) {
+  const { id, title, note } = data;
   return (
     <div className="note">
       <div className="note-title">({id}) {title}</div>
       <div>{note}</div>
+      <NoteControlPanel id={id} onDeleteNote={onDeleteNote} />
     </div>
   );
 }

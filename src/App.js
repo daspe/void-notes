@@ -110,9 +110,7 @@ class App extends Component {
       // return; // Stop if key is the wrong length; comment out for debug
     }
     // Fetch notebook data from API using submitted key
-    fetch((API_URL + 'vn/nb/' + submittedNbKey), {
-      method: 'get',
-    })
+    fetch(`${API_URL}vn/nb/${submittedNbKey}`, {method: 'get'})
     .then(response => response.json())
     .then(nb => {
       if (nb.nbKey) {
@@ -120,16 +118,13 @@ class App extends Component {
         this.setMsg('Notebook was loaded!');
         // TODO --> Extract fetch requests into their own functions
         // E.G. handleNbRequest, handleNotesRequest
-        fetch((API_URL + 'vn/notes/' + nb.nbKey), {
-          method: 'get',
-        })
+        fetch(`${API_URL}vn/notes/${nb.nbKey}`, {method: 'get'})
         .then(response => response.json())
         .then(notes => {
           if (notes[0].nbKey) {
             this.loadNotes(notes); // load notes in notebook
           }
         })
-        .catch(err => console.log(err));
       }
     })
     .catch(err => console.log(err));
@@ -145,6 +140,7 @@ class App extends Component {
       console.log(data.nb);
       if (data.nb.nbKey) {
         this.loadNotebook(data.nb);
+        this.loadNotes([]);
         this.setMsg('Notebook was created!');
       }
     })
@@ -205,7 +201,6 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data.note);
       if (data.note) {
         let updatedNotes = this.state.notes.slice(); // create copy of this.state.notes
         updatedNotes.push(data.note); // add note to updatedNotes
@@ -224,9 +219,32 @@ class App extends Component {
     return;
   }
 
-  onDeleteNote = (data) => {
-    // TODO -- Delete a note
-    return;
+  onDeleteNote = (id) => {
+    // Delete a new note in the database
+    if (!this.state.nb.nbKey || !id) {return}; // End function if nbKey not found
+    const key = this.state.nb.nbKey;
+
+    fetch((`${API_URL}vn/note/${key}/${id}/delete`), {
+      method: 'delete',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        confirmDelete: true, // temp; should have a confirmation dialog before deleting
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.note) {
+        // Create a copy of state.notes and filter to remove the deleted note
+        let updatedNotes = this.state.notes.slice().filter((note) => {
+          return note.id !== id;
+        });
+        this.setState({
+          notes: updatedNotes,
+        });
+        this.setMsg('Note was deleted!');
+      }
+    })
+    .catch(err => console.log(err));
   }
 
   toggleMsg = () => {
@@ -284,7 +302,7 @@ class App extends Component {
               </div>
               }
               <Notebook
-                setMsg={this.setMsg}
+                onDeleteNote={this.onDeleteNote}
                 nbLoaded={this.state.nbLoaded}
                 notesLoaded={this.state.notesLoaded}
                 nb={this.state.nb}
