@@ -205,7 +205,6 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data.note);
       if (data.note) {
         let updatedNotes = this.state.notes.slice(); // create copy of this.state.notes
         updatedNotes.push(data.note); // add note to updatedNotes
@@ -224,9 +223,32 @@ class App extends Component {
     return;
   }
 
-  onDeleteNote = (data) => {
-    // TODO -- Delete a note
-    return;
+  onDeleteNote = (id) => {
+    // Delete a new note in the database
+    if (!this.state.nb.nbKey || !id) {return}; // End function if nbKey not found
+    const key = this.state.nb.nbKey;
+
+    fetch((`${API_URL}vn/note/${key}/${id}/delete`), {
+      method: 'delete',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        confirmDelete: true, // temp; should have a confirmation dialog before deleting
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.note) {
+        // Create a copy of state.notes and filter to remove the deleted note
+        let updatedNotes = this.state.notes.slice().filter((note) => {
+          return note.id !== id;
+        });
+        this.setState({
+          notes: updatedNotes,
+        });
+        this.setMsg('Note was deleted!');
+      }
+    })
+    .catch(err => console.log(err));
   }
 
   toggleMsg = () => {
@@ -284,7 +306,7 @@ class App extends Component {
               </div>
               }
               <Notebook
-                setMsg={this.setMsg}
+                onDeleteNote={this.onDeleteNote}
                 nbLoaded={this.state.nbLoaded}
                 notesLoaded={this.state.notesLoaded}
                 nb={this.state.nb}
