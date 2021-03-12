@@ -110,9 +110,7 @@ class App extends Component {
       // return; // Stop if key is the wrong length; comment out for debug
     }
     // Fetch notebook data from API using submitted key
-    fetch((API_URL + 'vn/nb/' + submittedNbKey), {
-      method: 'get',
-    })
+    fetch(`${API_URL}vn/nb/${submittedNbKey}`, {method: 'get'})
     .then(response => response.json())
     .then(nb => {
       if (nb.nbKey) {
@@ -120,16 +118,13 @@ class App extends Component {
         this.setMsg('Notebook was loaded!');
         // TODO --> Extract fetch requests into their own functions
         // E.G. handleNbRequest, handleNotesRequest
-        fetch((API_URL + 'vn/notes/' + nb.nbKey), {
-          method: 'get',
-        })
+        fetch(`${API_URL}vn/notes/${nb.nbKey}`, {method: 'get'})
         .then(response => response.json())
         .then(notes => {
           if (notes[0].nbKey) {
             this.loadNotes(notes); // load notes in notebook
           }
         })
-        .catch(err => console.log(err));
       }
     })
     .catch(err => console.log(err));
@@ -145,6 +140,7 @@ class App extends Component {
       console.log(data.nb);
       if (data.nb.nbKey) {
         this.loadNotebook(data.nb);
+        this.loadNotes([]);
         this.setMsg('Notebook was created!');
       }
     })
