@@ -7,7 +7,7 @@ function Note({ data, onDeleteNote }) {
   return (
     <div className="note">
       <div className="note-title">({id}) {title}</div>
-      <div>{note}</div>
+      <div className="note-body">{note}</div>
       <NoteControlPanel id={id} onDeleteNote={onDeleteNote} />
     </div>
   );

@@ -13,6 +13,7 @@ import {
   faClock,
   faTimesCircle,
   faTrashAlt,
+  faEdit,
 } from '@fortawesome/free-regular-svg-icons';
 import {
   faTools,
@@ -38,6 +39,7 @@ library.add(
   faClock,
   faTimesCircle,
   faTrashAlt,
+  faEdit,
   faTools,
   faKey,
 );
@@ -116,8 +118,7 @@ class App extends Component {
       if (nb.nbKey) {
         this.loadNotebook(nb); // load the notebook
         this.setMsg('Notebook was loaded!');
-        // TODO --> Extract fetch requests into their own functions
-        // E.G. handleNbRequest, handleNotesRequest
+        // Fetch notes from API
         fetch(`${API_URL}vn/notes/${nb.nbKey}`, {method: 'get'})
         .then(response => response.json())
         .then(notes => {
