@@ -7,17 +7,20 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function NoteControlPanel({ id, onEditNote, onDeleteNote }) {
+function NoteControlPanel({ data, onDeleteNote, fillNoteModal }) {
   return (
     <div className="note-control-panel">
       <ButtonToolbar aria-label="Toolbar with buttons for note edit and delete">
         <ButtonGroup aria-label="First group">
           {/* display edit button */}
-          <Button variant="outline-info" onClick={() => onEditNote(id)}>
+          <Button variant="outline-info" onClick={() => {
+            fillNoteModal(data.id, data.title, data.note);
+          }}
+          >
             <FontAwesomeIcon size="sm" icon={['far', 'edit']} />
           </Button>
           {/* display delete button */}
-          <Button variant="outline-danger" onClick={() => onDeleteNote(id)}>
+          <Button variant="outline-danger" onClick={() => onDeleteNote(data.id)}>
             <FontAwesomeIcon size="sm" icon={['far', 'trash-alt']} />
           </Button>
         </ButtonGroup>

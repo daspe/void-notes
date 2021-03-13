@@ -10,8 +10,9 @@ class NoteModalForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      note: '',
+      id: this.props.noteModalId,
+      title: this.props.noteModalTitle,
+      note: this.props.noteModalText,
     };
   }
 
@@ -57,11 +58,18 @@ class NoteModalForm extends React.Component {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button 
-            variant="primary"
-            type="submit"
-            onClick={() => this.props.onCreateNote(this.state)}
-          >Submit</Button>
+          {this.props.noteModalEdit ?
+            <Button 
+              variant="info"
+              type="submit"
+              onClick={() => this.props.onEditNote(this.state)}
+            >Edit</Button>
+          : <Button 
+              variant="success"
+              type="submit"
+              onClick={() => this.props.onCreateNote(this.state)}
+            >Submit</Button>
+          }
         </Modal.Footer>
       </Modal>
     );
