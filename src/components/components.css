@@ -24,6 +24,9 @@
 }
 
 .note {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
     padding: 5px;
     min-height: 150px;
     min-width: 200px;
@@ -35,6 +38,14 @@
 .note-title {
     font-weight: bold;
     border-bottom: 1px solid gray;
+}
+
+.note-body {
+    flex-grow: 2;
+}
+
+.note-control-panel {
+    align-self: flex-end;
 }
 
 .message {

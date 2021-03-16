@@ -2,14 +2,25 @@ import React from 'react';
 import Note from './Note';
 import './components.css';
 
-function Notebook({ onDeleteNote, nbLoaded, notesLoaded, notes }) {
+function Notebook({ 
+  onDeleteNote,
+  fillNoteModal,
+  nbLoaded,
+  notesLoaded,
+  notes 
+}) {
   if (nbLoaded) {
     if (notesLoaded) {
       return (
         <div>
           <div className="notebook container">
             {notes.map(data => (
-              <Note key={data.id} data={data} onDeleteNote={onDeleteNote} />
+              <Note
+                key={data.id}
+                data={data}
+                onDeleteNote={onDeleteNote}
+                fillNoteModal={fillNoteModal}
+              />
             ))}
           </div>
         </div>

@@ -13,6 +13,7 @@ import {
   faClock,
   faTimesCircle,
   faTrashAlt,
+  faEdit,
 } from '@fortawesome/free-regular-svg-icons';
 import {
   faTools,
@@ -38,6 +39,7 @@ library.add(
   faClock,
   faTimesCircle,
   faTrashAlt,
+  faEdit,
   faTools,
   faKey,
 );
@@ -53,6 +55,9 @@ class App extends Component {
       msg: 'Welcome to Void-Notes!',
       showMsg: true,
       showNoteModal: false,
+      noteModalTitle: 'test',
+      noteModalText: '',
+      noteModalEdit: false,
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
@@ -70,7 +75,27 @@ class App extends Component {
   }
 
   openNoteModal = () => this.setState({ showNoteModal: true });
-  closeNoteModal = () => this.setState({ showNoteModal: false });
+  closeNoteModal = () => {
+    this.setState({ 
+      showNoteModal: false,
+      noteModalId: null,
+      noteModalTitle: '',
+      noteModalText: '',
+      noteModalEdit: false,
+    });
+  }
+
+  fillNoteModal = (id=null, title='', text='') => {
+    const noteModalEdit = (title || text) ? true : false;
+    // Fill the input fields of note modal with string arguments
+    this.setState({
+      showNoteModal: true,
+      noteModalId: id,
+      noteModalTitle: title,
+      noteModalText: text,
+      noteModalEdit: noteModalEdit,
+    });
+  }
 
   loadNotebook = (data) => {
     this.setState({
@@ -116,8 +141,7 @@ class App extends Component {
       if (nb.nbKey) {
         this.loadNotebook(nb); // load the notebook
         this.setMsg('Notebook was loaded!');
-        // TODO --> Extract fetch requests into their own functions
-        // E.G. handleNbRequest, handleNotesRequest
+        // Fetch notes from API
         fetch(`${API_URL}vn/notes/${nb.nbKey}`, {method: 'get'})
         .then(response => response.json())
         .then(notes => {
@@ -191,7 +215,7 @@ class App extends Component {
     if (!this.state.nb.nbKey) {return}; // End function if nbKey not found
     const key = this.state.nb.nbKey;
 
-    fetch((API_URL + 'vn/note/' + key + '/create'), {
+    fetch(`${API_URL}vn/note/${key}/create`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -215,8 +239,34 @@ class App extends Component {
   }
 
   onEditNote = (data) => {
-    // TODO -- Edit a note with supplied data
-    return;
+    // Edit a note in the database
+    if (!this.state.nb.nbKey || !data.id) {return}; // End function if nbKey not found
+    const key = this.state.nb.nbKey;
+
+    fetch(`${API_URL}vn/note/${key}/${data.id}/edit`, {
+      method: 'put',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        newTitle: data.title,
+        newNote: data.note,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.note) {
+        // Create a copy of state.notes and filter to remove the unedited note
+        let updatedNotes = this.state.notes.slice().filter(note => {
+          return note.id !== data.note.id;
+        });
+        updatedNotes.push(data.note); // add edited note to updatedNotes
+        this.setState({
+          showNoteModal: false, // hide the note modal
+          notes: updatedNotes,
+        });
+        this.setMsg('Note was edited!');
+      }
+    })
+    .catch(err => console.log(err));
   }
 
   onDeleteNote = (id) => {
@@ -235,7 +285,7 @@ class App extends Component {
     .then(data => {
       if (data.note) {
         // Create a copy of state.notes and filter to remove the deleted note
-        let updatedNotes = this.state.notes.slice().filter((note) => {
+        let updatedNotes = this.state.notes.slice().filter(note => {
           return note.id !== id;
         });
         this.setState({
@@ -293,19 +343,22 @@ class App extends Component {
                 {this.state.showNoteModal &&
                   <NoteModalForm 
                     showNoteModal={this.state.showNoteModal}
+                    noteModalId={this.state.noteModalId}
+                    noteModalTitle={this.state.noteModalTitle}
+                    noteModalText={this.state.noteModalText}
+                    noteModalEdit={this.state.noteModalEdit}
                     closeNoteModal={this.closeNoteModal}
                     onCreateNote={this.onCreateNote}
                     onEditNote={this.onEditNote}
-                    onDeleteNote={this.onDeleteNote}
                   />
                 }
               </div>
               }
               <Notebook
                 onDeleteNote={this.onDeleteNote}
+                fillNoteModal={this.fillNoteModal}
                 nbLoaded={this.state.nbLoaded}
                 notesLoaded={this.state.notesLoaded}
-                nb={this.state.nb}
                 notes={this.state.notes}
               />
             </Route>

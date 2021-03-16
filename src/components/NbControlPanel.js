@@ -17,7 +17,7 @@ function NbControlPanel({
 }) {
   return (
     <div className="container">
-      <ButtonToolbar aria-label="Toolbar with button groups">
+      <ButtonToolbar aria-label="Toolbar with buttons for notebook control">
         <ButtonGroup className="mr-2" aria-label="First group">
           <Button variant="success" onClick={openNoteModal}>
             <FontAwesomeIcon className="mr-2" icon={['far', 'sticky-note']} />
