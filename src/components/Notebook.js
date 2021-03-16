@@ -5,6 +5,7 @@ import './components.css';
 function Notebook({ 
   onDeleteNote,
   openNoteModal,
+  openConfirmModal,
   nbLoaded,
   notesLoaded,
   notes 
@@ -20,6 +21,7 @@ function Notebook({
                 data={data}
                 onDeleteNote={onDeleteNote}
                 openNoteModal={openNoteModal}
+                openConfirmModal={openConfirmModal}
               />
             ))}
           </div>
