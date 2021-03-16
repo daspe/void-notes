@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function NbControlPanel({ 
   openNoteModal,
+  openConfirmModal,
   onRenewNb,
   unloadNotebook,
   onDeleteNb 
@@ -40,7 +41,9 @@ function NbControlPanel({
               <FontAwesomeIcon className="mr-2" icon={['far', 'times-circle']} />
               Unload Notebook
             </Dropdown.Item>
-            <Dropdown.Item as="button" onClick={onDeleteNb}>
+            <Dropdown.Item as="button" onClick={() => {
+              openConfirmModal('Are you sure you want to delete this notebook?', onDeleteNb);
+            }}>
               <FontAwesomeIcon className="mr-2" icon={['far', 'trash-alt']} />
               Delete Notebook
             </Dropdown.Item>

@@ -26,6 +26,7 @@ import NbControlPanel from './components/NbControlPanel';
 import Notebook from './components/Notebook';
 import NotebookInfo from './components/NotebookInfo';
 import NoteModalForm from './components/NoteModalForm';
+import ConfirmModal from './components/ConfirmModal';
 import Message from './components/Message';
 
 // Import Bootstrap and App CSS
@@ -54,6 +55,10 @@ class App extends Component {
     this.state = {
       msg: 'Welcome to Void-Notes!',
       showMsg: true,
+      showConfirmModal: false,
+      confirmModalMsg: '',
+      confirmModalAction: null,
+      confirmModalArg: null,
       showNoteModal: false,
       noteModalTitle: '',
       noteModalText: '',
@@ -72,6 +77,34 @@ class App extends Component {
     this.unloadNotebook = this.unloadNotebook.bind(this);
     this.toggleMsg = this.toggleMsg.bind(this);
     this.setMsg = this.setMsg.bind(this);
+  }
+
+  closeConfirmModal = () => {
+    this.setState({
+      showConfirmModal: false,
+      confirmModalMsg: '',
+      confirmModalAction: null,
+      confirmModalArg: null,
+    });
+  }
+
+  openConfirmModal = (msg, action, arg=null) => {
+    this.setState({
+      showConfirmModal: true,
+      confirmModalMsg: msg,
+      confirmModalAction: action,
+      confirmModalArg: arg,
+    });
+  }
+
+  onConfirm = () => {
+    // Run the function that was set when openConfirmModal was called
+    if (this.state.confirmModalArg) {
+      this.state.confirmModalAction(this.state.confirmModalArg);
+    } else {
+      this.state.confirmModalAction();
+    }
+    this.closeConfirmModal(); // close and reset confirm modal
   }
 
   closeNoteModal = () => {
@@ -335,10 +368,19 @@ class App extends Component {
                 <NbControlPanel 
                   nb={this.state.nb}
                   openNoteModal={this.openNoteModal}
+                  openConfirmModal={this.openConfirmModal}
                   onRenewNb={this.onRenewNb}
                   unloadNotebook={this.unloadNotebook}
                   onDeleteNb={this.onDeleteNb}
                 />
+                {this.state.showConfirmModal &&
+                  <ConfirmModal
+                    msg={this.state.confirmModalMsg}
+                    closeConfirmModal={this.closeConfirmModal}
+                    openConfirmModal={this.openConfirmModal}
+                    onConfirm={this.onConfirm}
+                  />
+                }
                 {this.state.showNoteModal &&
                   <NoteModalForm 
                     showNoteModal={this.state.showNoteModal}
@@ -356,6 +398,7 @@ class App extends Component {
               <Notebook
                 onDeleteNote={this.onDeleteNote}
                 openNoteModal={this.openNoteModal}
+                openConfirmModal={this.openConfirmModal}
                 nbLoaded={this.state.nbLoaded}
                 notesLoaded={this.state.notesLoaded}
                 notes={this.state.notes}

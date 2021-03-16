@@ -2,7 +2,7 @@ import React from 'react';
 import NoteControlPanel from './NoteControlPanel';
 import './components.css';
 
-function Note({ data, onDeleteNote, openNoteModal }) {
+function Note({ data, onDeleteNote, openNoteModal, openConfirmModal }) {
   const { id, title, note } = data;
   return (
     <div className="note">
@@ -12,6 +12,7 @@ function Note({ data, onDeleteNote, openNoteModal }) {
         data={data}
         onDeleteNote={onDeleteNote}
         openNoteModal={openNoteModal}
+        openConfirmModal={openConfirmModal}
       />
     </div>
   );
