@@ -88,7 +88,7 @@ class App extends Component {
     });
   }
 
-  openConfirmModal = (msg, action, arg) => {
+  openConfirmModal = (msg, action, arg=null) => {
     this.setState({
       showConfirmModal: true,
       confirmModalMsg: msg,
@@ -99,7 +99,11 @@ class App extends Component {
 
   onConfirm = () => {
     // Run the function that was set when openConfirmModal was called
-    this.state.confirmModalAction(this.state.confirmModalArg);
+    if (this.state.confirmModalArg) {
+      this.state.confirmModalAction(this.state.confirmModalArg);
+    } else {
+      this.state.confirmModalAction();
+    }
     this.closeConfirmModal(); // close and reset confirm modal
   }
 
@@ -364,6 +368,7 @@ class App extends Component {
                 <NbControlPanel 
                   nb={this.state.nb}
                   openNoteModal={this.openNoteModal}
+                  openConfirmModal={this.openConfirmModal}
                   onRenewNb={this.onRenewNb}
                   unloadNotebook={this.unloadNotebook}
                   onDeleteNb={this.onDeleteNb}
