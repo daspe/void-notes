@@ -4,7 +4,7 @@ import './components.css';
 
 function Notebook({ 
   onDeleteNote,
-  fillNoteModal,
+  openNoteModal,
   nbLoaded,
   notesLoaded,
   notes 
@@ -19,7 +19,7 @@ function Notebook({
                 key={data.id}
                 data={data}
                 onDeleteNote={onDeleteNote}
-                fillNoteModal={fillNoteModal}
+                openNoteModal={openNoteModal}
               />
             ))}
           </div>
