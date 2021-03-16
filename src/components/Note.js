@@ -2,7 +2,7 @@ import React from 'react';
 import NoteControlPanel from './NoteControlPanel';
 import './components.css';
 
-function Note({ data, onDeleteNote, fillNoteModal }) {
+function Note({ data, onDeleteNote, openNoteModal }) {
   const { id, title, note } = data;
   return (
     <div className="note">
@@ -11,7 +11,7 @@ function Note({ data, onDeleteNote, fillNoteModal }) {
       <NoteControlPanel 
         data={data}
         onDeleteNote={onDeleteNote}
-        fillNoteModal={fillNoteModal}
+        openNoteModal={openNoteModal}
       />
     </div>
   );

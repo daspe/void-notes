@@ -55,7 +55,7 @@ class App extends Component {
       msg: 'Welcome to Void-Notes!',
       showMsg: true,
       showNoteModal: false,
-      noteModalTitle: 'test',
+      noteModalTitle: '',
       noteModalText: '',
       noteModalEdit: false,
       inputNbKey: '',
@@ -74,7 +74,6 @@ class App extends Component {
     this.setMsg = this.setMsg.bind(this);
   }
 
-  openNoteModal = () => this.setState({ showNoteModal: true });
   closeNoteModal = () => {
     this.setState({ 
       showNoteModal: false,
@@ -85,7 +84,7 @@ class App extends Component {
     });
   }
 
-  fillNoteModal = (id=null, title='', text='') => {
+  openNoteModal = (id=null, title='', text='') => {
     const noteModalEdit = (title || text) ? true : false;
     // Fill the input fields of note modal with string arguments
     this.setState({
@@ -356,7 +355,7 @@ class App extends Component {
               }
               <Notebook
                 onDeleteNote={this.onDeleteNote}
-                fillNoteModal={this.fillNoteModal}
+                openNoteModal={this.openNoteModal}
                 nbLoaded={this.state.nbLoaded}
                 notesLoaded={this.state.notesLoaded}
                 notes={this.state.notes}
