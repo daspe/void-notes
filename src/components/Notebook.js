@@ -11,10 +11,10 @@ function Notebook({
   notes 
 }) {
   if (nbLoaded) {
-    if (notesLoaded) {
+    if (notesLoaded && notes.length > 0) {
       return (
         <div>
-          <div className="notebook container">
+          <div className="notebook vn-container container">
             {notes.map(data => (
               <Note
                 key={data.id}
@@ -30,16 +30,18 @@ function Notebook({
     } else {
       return (
         <div>
-          <div className="notebook container">
-            <p>There are no notes in this notebook...</p>
+          <div className="vn-container container">
+            <p className="text-center">
+              There are no notes in your notebook. Click the <b>'Create Note'</b> button above to add one.
+            </p>
           </div>
         </div>
       );
     }
   } else {
     return (
-      <div className="notebook container">
-        <p>A notebook is not loaded :(</p>
+      <div className="vn-container container">
+        <p className="text-center">A notebook is not loaded :(</p>
       </div>
     );
   }

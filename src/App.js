@@ -28,6 +28,7 @@ import NotebookInfo from './components/NotebookInfo';
 import NoteModalForm from './components/NoteModalForm';
 import ConfirmModal from './components/ConfirmModal';
 import Message from './components/Message';
+import Welcome from './components/Welcome';
 
 // Import Bootstrap and App CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -361,7 +362,7 @@ class App extends Component {
               {this.state.nbLoaded &&
               <div>
                 <NotebookInfo 
-                  className="container"
+                  className="vn-container container"
                   nb={this.state.nb}
                   notes={this.state.notes}
                 />
@@ -372,6 +373,14 @@ class App extends Component {
                   onRenewNb={this.onRenewNb}
                   unloadNotebook={this.unloadNotebook}
                   onDeleteNb={this.onDeleteNb}
+                />
+                <Notebook
+                  onDeleteNote={this.onDeleteNote}
+                  openNoteModal={this.openNoteModal}
+                  openConfirmModal={this.openConfirmModal}
+                  nbLoaded={this.state.nbLoaded}
+                  notesLoaded={this.state.notesLoaded}
+                  notes={this.state.notes}
                 />
                 {this.state.showConfirmModal &&
                   <ConfirmModal
@@ -394,15 +403,10 @@ class App extends Component {
                   />
                 }
               </div>
+              } 
+              {!this.state.nbLoaded &&
+                <Welcome onCreateNb={this.onCreateNb} />
               }
-              <Notebook
-                onDeleteNote={this.onDeleteNote}
-                openNoteModal={this.openNoteModal}
-                openConfirmModal={this.openConfirmModal}
-                nbLoaded={this.state.nbLoaded}
-                notesLoaded={this.state.notesLoaded}
-                notes={this.state.notes}
-              />
             </Route>
             <Route path="/about">
               

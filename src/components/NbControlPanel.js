@@ -17,7 +17,7 @@ function NbControlPanel({
   onDeleteNb 
 }) {
   return (
-    <div className="container">
+    <div className="vn-container container">
       <ButtonToolbar aria-label="Toolbar with buttons for notebook control">
         <ButtonGroup className="mr-2" aria-label="First group">
           <Button variant="success" onClick={openNoteModal}>
