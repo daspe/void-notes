@@ -55,7 +55,7 @@ class App extends Component {
     super();
     this.state = {
       msg: 'Welcome to Void-Notes!',
-      showMsg: true,
+      showMsg: false,
       showConfirmModal: false,
       confirmModalMsg: '',
       confirmModalAction: null,

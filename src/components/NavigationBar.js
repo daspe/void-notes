@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 function NavigationBar({ nbLoaded, nb, unloadNotebook, onChange, onSubmit, onCreateNb }) {
   return (
     <Navbar bg="dark" variant="dark" expand="md">
-      <Navbar.Brand href="/">
+      <Navbar.Brand className="title">
         <FontAwesomeIcon className="mr-2" icon={['far', 'sticky-note']} />
         Void-Notes
       </Navbar.Brand>
@@ -21,8 +21,8 @@ function NavigationBar({ nbLoaded, nb, unloadNotebook, onChange, onSubmit, onCre
           <Nav.Link href="/about">About</Nav.Link>
         </Nav>
         {!nbLoaded ? 
-          <LoadNbForm onChange={onChange} onSubmit={onSubmit} onCreateNb={onCreateNb} /> :
-          <NavBarNbInfo nb={nb} unloadNotebook={unloadNotebook} />
+          <LoadNbForm onChange={onChange} onSubmit={onSubmit} onCreateNb={onCreateNb} />
+          : <NavBarNbInfo nb={nb} unloadNotebook={unloadNotebook} />
         }
       </Navbar.Collapse>
     </Navbar>
