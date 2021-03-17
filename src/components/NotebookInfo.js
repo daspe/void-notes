@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function NotebookInfo({ nb, notes }) {
     return (
-        <div className="notebook-info container">
+        <div className="notebook-info vn-container container">
             <FontAwesomeIcon className="mr-2" icon={['fas', 'key']} />
             {nb.nbKey} (Showing {notes.length} Notes)
         </div>
