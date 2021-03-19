@@ -353,6 +353,7 @@ class App extends Component {
             onChange={this.onChangeNbKey}
             onSubmit={this.onSubmitNbKey}
             onCreateNb={this.onCreateNb}
+            setMsg={this.setMsg}
           />
         </header>
         <main className="content">
