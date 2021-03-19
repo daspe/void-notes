@@ -4,7 +4,7 @@ import {
   Jumbotron,
   Button,
 } from 'react-bootstrap';
-import logo from '../images/vn_logo.svg';
+import logo from '../images/vn_logo-2.svg';
 import './components.css';
 
 function Welcome({ onCreateNb }) {
