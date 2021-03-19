@@ -345,7 +345,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
+        <header>
           <NavigationBar 
             nbLoaded={this.state.nbLoaded}
             nb={this.state.nb}
@@ -354,6 +354,8 @@ class App extends Component {
             onSubmit={this.onSubmitNbKey}
             onCreateNb={this.onCreateNb}
           />
+        </header>
+        <main className="content">
           {this.state.showMsg &&
             <Message msg={this.state.msg} toggleMsg={this.toggleMsg} />
           }
@@ -412,7 +414,10 @@ class App extends Component {
               
             </Route>
           </Switch>
-        </div>
+        </main>
+        <footer className="footer">
+          © 2021 Dan Spencer
+        </footer>
       </Router>
     );
   }
