@@ -416,7 +416,7 @@ class App extends Component {
           </Switch>
         </main>
         <footer className="footer">
-          © 2021 Dan Spencer
+          © 2021 <a href="https://dspence.net/">Dan Spencer</a>
         </footer>
       </Router>
     );

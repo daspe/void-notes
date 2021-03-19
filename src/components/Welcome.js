@@ -4,7 +4,7 @@ import {
   Jumbotron,
   Button,
 } from 'react-bootstrap';
-import logo from '../images/vn_logo-2.svg';
+import { ReactComponent as Logo } from '../images/vn_logo-2.svg';
 import './components.css';
 
 function Welcome({ onCreateNb }) {
@@ -26,7 +26,7 @@ function Welcome({ onCreateNb }) {
           If you have a key for a previously created notebook, you can copy it into the navigation bar field
           at the top of this page.
         </p>
-        <img className="logo" src={logo} alt="" />
+        <Logo className="logo" alt="" />
       </Jumbotron>
     </div>
   );

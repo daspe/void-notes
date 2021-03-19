@@ -99,3 +99,15 @@
     max-width: 400px;
     align-self: center;
 }
+
+.logo:hover #svg-logo-bg {
+    fill: rgba(0, 0, 0, 0.4);
+}
+
+.logo:hover #svg-logo-fg {
+    fill: #343a40;
+}
+
+#svg-logo-bg, #svg-logo-fg  {
+    transition: 0.5s;
+}

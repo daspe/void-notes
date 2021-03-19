@@ -18,7 +18,7 @@ function NavigationBar({ nbLoaded, nb, unloadNotebook, onChange, onSubmit, onCre
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="/about">About</Nav.Link>
+          <Nav.Link href="https://github.com/d-spence/void-notes">About</Nav.Link>
         </Nav>
         {!nbLoaded ? 
           <LoadNbForm onChange={onChange} onSubmit={onSubmit} onCreateNb={onCreateNb} />

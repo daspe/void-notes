@@ -23,3 +23,12 @@ footer {
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Bungee', cursive;
 }
+
+a {
+    color: #ffffffbf;
+}
+
+a:hover, a:active {
+    color: #2090c1;
+    text-decoration: none;
+}
