@@ -4,6 +4,8 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
+import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
 
 // Import Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -51,8 +53,13 @@ const API_URL = 'http://localhost:3001/'; // Void-Notes-API URL
 const NB_KEY_LENGTH = 30; // Used to verify key length before api request
 
 class App extends Component {
-  constructor() {
-    super();
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    const { cookies } = props;
     this.state = {
       msg: 'Welcome to Void-Notes!',
       showMsg: false,
@@ -67,6 +74,7 @@ class App extends Component {
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
+      nbKeyFromCookie: cookies.get('nbKey') || '',
       nb: {
         nbKey: '',
         created: '',
@@ -78,6 +86,31 @@ class App extends Component {
     this.unloadNotebook = this.unloadNotebook.bind(this);
     this.toggleMsg = this.toggleMsg.bind(this);
     this.setMsg = this.setMsg.bind(this);
+  }
+
+  componentDidMount() {
+    // Load automatically from cookie when App loads (page refresh)
+    this.loadNbFromCookie();
+  }
+
+  loadNbFromCookie = () => {
+    // Load notebook from nbKey cookie
+    if (!this.state.nbKeyFromCookie) {return}; // End function if nbKey not found
+    this.onSubmitNbKey(this.state.nbKeyFromCookie);
+  }
+
+  handleSetCookie = (nbKey) => {
+    const { cookies } = this.props;
+    cookies.set('nbKey', nbKey, {
+      path: '/', 
+      maxAge: 2678400, // expires 31 days from now
+      sameSite: 'lax',
+    });
+  }
+
+  handleRemoveCookie = () => {
+    const { cookies } = this.props;
+    cookies.remove('nbKey');
   }
 
   closeConfirmModal = () => {
@@ -152,6 +185,7 @@ class App extends Component {
   unloadNotebook = () => {
     // Unload notes and reset to fresh app state 
     this.setState(this.baseState);
+    this.handleRemoveCookie();
     this.setMsg('Notebook was unloaded...');
   }
 
@@ -162,7 +196,14 @@ class App extends Component {
   }
 
   onSubmitNbKey = () => {
-    const submittedNbKey = this.state.inputNbKey;
+    const { inputNbKey, nbKeyFromCookie } = this.state;
+    // If inputNbKey is blank, try to get key from cookie
+    const submittedNbKey = inputNbKey ? inputNbKey : nbKeyFromCookie;
+    if (!submittedNbKey) {
+      this.setMsg('Notebook could not be loaded...');
+      return;
+    }
+    // Make sure the key is the correct length before submitting
     if (submittedNbKey.length < NB_KEY_LENGTH || submittedNbKey > NB_KEY_LENGTH) {
       this.setMsg('Incorrect key length. Must be 30 characters long.');
       // return; // Stop if key is the wrong length; comment out for debug
@@ -173,6 +214,7 @@ class App extends Component {
     .then(nb => {
       if (nb.nbKey) {
         this.loadNotebook(nb); // load the notebook
+        this.handleSetCookie(nb.nbKey); // set cookie
         this.setMsg('Notebook was loaded!');
         // Fetch notes from API
         fetch(`${API_URL}vn/notes/${nb.nbKey}`, {method: 'get'})
@@ -198,6 +240,7 @@ class App extends Component {
       if (data.nb.nbKey) {
         this.loadNotebook(data.nb);
         this.loadNotes([]);
+        this.handleSetCookie(data.nb.nbKey);
         this.setMsg('Notebook was created!');
       }
     })
@@ -218,6 +261,7 @@ class App extends Component {
       if (data.nb.nbKey) {
         const expiration = data.nb.expiration;
         this.loadNotebook(data.nb); // reload the notebook
+        this.handleSetCookie(data.nb.nbKey); // set cookie with new expiration
         this.setMsg(`Notebook was renewed until ${expiration.slice(0, 10)} (30 days)`);
       }
     })
@@ -237,6 +281,7 @@ class App extends Component {
       console.log(data);
       if (data.nb.nbKey) {
         this.unloadNotebook(data.nb);
+        this.handleRemoveCookie();
         this.setMsg('Notebook was deleted...');
       }
     })
@@ -417,11 +462,11 @@ class App extends Component {
           </Switch>
         </main>
         <footer className="footer">
-          © 2021 <a href="https://dspence.net/">Dan Spencer</a>
+          © 2021 <a href="https://dspence.net/" rel="noreferrer" target="_blank">Dan Spencer</a>
         </footer>
       </Router>
     );
   }
 }
 
-export default App;
+export default withCookies(App);
