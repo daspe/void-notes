@@ -189,9 +189,9 @@ class App extends Component {
     this.setMsg('Notebook was unloaded...');
   }
 
-  onChangeNbKey = (event) => {
+  onChangeNbKey = (e) => {
     this.setState({
-      inputNbKey: event.target.value,
+      inputNbKey: e.target.value,
     });
   }
 
@@ -395,8 +395,8 @@ class App extends Component {
             nbLoaded={this.state.nbLoaded}
             nb={this.state.nb}
             unloadNotebook={this.unloadNotebook}
-            onChange={this.onChangeNbKey}
-            onSubmit={this.onSubmitNbKey}
+            onChangeNbKey={this.onChangeNbKey}
+            onSubmitNbKey={this.onSubmitNbKey}
             onCreateNb={this.onCreateNb}
             setMsg={this.setMsg}
           />
@@ -455,9 +455,6 @@ class App extends Component {
               {!this.state.nbLoaded &&
                 <Welcome onCreateNb={this.onCreateNb} />
               }
-            </Route>
-            <Route path="/about">
-              
             </Route>
           </Switch>
         </main>

@@ -24,7 +24,7 @@ function Welcome({ onCreateNb }) {
         </p>
         <p>
           If you have a key for a previously created notebook, you can copy it into the navigation bar field
-          at the top of this page.
+          at the top of this page. Your key is saved as a cookie and reloaded automatically the next time you visit.
         </p>
         <Logo className="logo" alt="" />
       </Jumbotron>

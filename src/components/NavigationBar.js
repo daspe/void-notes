@@ -12,8 +12,8 @@ function NavigationBar({
   nbLoaded,
   nb,
   unloadNotebook,
-  onChange,
-  onSubmit,
+  onChangeNbKey,
+  onSubmitNbKey,
   onCreateNb,
   setMsg 
   }) {
@@ -29,7 +29,11 @@ function NavigationBar({
           <Nav.Link href="https://github.com/d-spence/void-notes" target="_blank">About</Nav.Link>
         </Nav>
         {!nbLoaded ? 
-          <LoadNbForm onChange={onChange} onSubmit={onSubmit} onCreateNb={onCreateNb} />
+          <LoadNbForm 
+            onChangeNbKey={onChangeNbKey}
+            onSubmitNbKey={onSubmitNbKey}
+            onCreateNb={onCreateNb}
+          />
           : <NavBarNbInfo nb={nb} unloadNotebook={unloadNotebook} setMsg={setMsg} />
         }
       </Navbar.Collapse>
