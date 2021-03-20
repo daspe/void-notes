@@ -104,6 +104,7 @@ class App extends Component {
     cookies.set('nbKey', nbKey, {
       path: '/', 
       maxAge: 2678400, // expires 31 days from now
+      sameSite: 'lax',
     });
   }
 
@@ -194,8 +195,15 @@ class App extends Component {
     });
   }
 
-  onSubmitNbKey = (submittedNbKey=this.state.inputNbKey) => {
-    // const submittedNbKey = this.state.inputNbKey;
+  onSubmitNbKey = () => {
+    const { inputNbKey, nbKeyFromCookie } = this.state;
+    // If inputNbKey is blank, try to get key from cookie
+    const submittedNbKey = inputNbKey ? inputNbKey : nbKeyFromCookie;
+    if (!submittedNbKey) {
+      this.setMsg('Notebook could not be loaded...');
+      return;
+    }
+    // Make sure the key is the correct length before submitting
     if (submittedNbKey.length < NB_KEY_LENGTH || submittedNbKey > NB_KEY_LENGTH) {
       this.setMsg('Incorrect key length. Must be 30 characters long.');
       // return; // Stop if key is the wrong length; comment out for debug
