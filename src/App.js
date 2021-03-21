@@ -71,6 +71,7 @@ class App extends Component {
       noteModalTitle: '',
       noteModalText: '',
       noteModalEdit: false,
+      inputSearchBox: '',
       inputNbKey: '',
       nbLoaded: false,
       notesLoaded: false,
@@ -189,9 +190,18 @@ class App extends Component {
     this.setMsg('Notebook was unloaded...');
   }
 
-  onChangeNbKey = (e) => {
+  onChangeSearchBox = (e) => {
+    // if called with no event, resets to empty string
+    const value = e?.target?.value ? e.target.value : '';
     this.setState({
-      inputNbKey: e.target.value,
+      inputSearchBox: value,
+    });
+  }
+
+  onChangeNbKey = (e) => {
+    const value = e?.target?.value ? e.target.value : '';
+    this.setState({
+      inputNbKey: value,
     });
   }
 
@@ -415,12 +425,12 @@ class App extends Component {
                   notes={this.state.notes}
                 />
                 <NbControlPanel 
-                  nb={this.state.nb}
                   openNoteModal={this.openNoteModal}
                   openConfirmModal={this.openConfirmModal}
                   onRenewNb={this.onRenewNb}
                   unloadNotebook={this.unloadNotebook}
                   onDeleteNb={this.onDeleteNb}
+                  onChangeSearchBox={this.onChangeSearchBox}
                 />
                 <Notebook
                   onDeleteNote={this.onDeleteNote}
@@ -429,6 +439,7 @@ class App extends Component {
                   nbLoaded={this.state.nbLoaded}
                   notesLoaded={this.state.notesLoaded}
                   notes={this.state.notes}
+                  inputSearchBox={this.state.inputSearchBox}
                 />
                 {this.state.showConfirmModal &&
                   <ConfirmModal

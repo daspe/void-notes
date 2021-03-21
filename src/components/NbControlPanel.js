@@ -8,13 +8,15 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import SearchBox from './SearchBox';
 
 function NbControlPanel({ 
   openNoteModal,
   openConfirmModal,
   onRenewNb,
   unloadNotebook,
-  onDeleteNb 
+  onDeleteNb,
+  onChangeSearchBox,
 }) {
   return (
     <div className="vn-container container">
@@ -49,6 +51,7 @@ function NbControlPanel({
             </Dropdown.Item>
           </DropdownButton>
         </ButtonGroup>
+        <SearchBox onChangeSearchBox={onChangeSearchBox} />
       </ButtonToolbar>
     </div>
   );
