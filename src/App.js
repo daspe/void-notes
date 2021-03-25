@@ -213,6 +213,13 @@ class App extends Component {
     .then(response => response.json())
     .then(nb => {
       if (nb.nbKey) {
+        // Check if the notebook is expired
+        if (Date.now() > Date.parse(nb.expiration)) {
+          this.setMsg('Notebook could not be loaded (expired)...');
+          // Request that the server cleans the db if expired
+          fetch(`${API_URL}vn/db/clean`, {method: 'get'});
+          return;
+        }
         this.loadNotebook(nb); // load the notebook
         this.handleSetCookie(nb.nbKey); // set cookie
         this.setMsg('Notebook was loaded!');
