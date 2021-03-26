@@ -220,7 +220,7 @@ class App extends Component {
     // Make sure the key is the correct length before submitting
     if (submittedNbKey.length < NB_KEY_LENGTH || submittedNbKey > NB_KEY_LENGTH) {
       this.setMsg('Incorrect key length. Must be 30 characters long.');
-      // return; // Stop if key is the wrong length; comment out for debug
+      return; // Stop if key is the wrong length
     }
     // Fetch notebook data from API using submitted key
     fetch(`${API_URL}vn/nb/${submittedNbKey}`, {method: 'get'})
