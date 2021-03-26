@@ -48,7 +48,11 @@ library.add(
   faKey,
 );
 
-const API_URL = 'http://localhost:3001/'; // Void-Notes-API URL
+// Get API url from env variable
+let API_URL = process.env.API_URL;
+if (API_URL == null || API_URL === "") {
+    API_URL = 'http://localhost:3001/'; // default if no API url
+}
 
 const NB_KEY_LENGTH = 30; // Used to verify key length before api request
 
